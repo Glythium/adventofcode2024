@@ -1,6 +1,16 @@
-from classes.D1 import D1
+"""
+The main driver for AoC 2024. Run this from the src directory
+"""
+
+try:
+    from classes.d_1 import D1
+except ModuleNotFoundError:
+    print("[!] Could not find modules!")
 
 def main():
+    """
+    Generates a solution for a day's puzzles
+    """
     print("[*] Beginning...")
     d1 = D1(debug=True)
     d1.one("../input/d1-1.txt")

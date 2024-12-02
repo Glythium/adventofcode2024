@@ -1,8 +1,18 @@
+"""
+File containing the abstract base class for each Day
+"""
+
 class Day():
+    """
+    Abstract base class for each Day's solutions
+    """
     def __init__(self, debug=False):
         self.debug = debug
 
     def read_input(self, input_file):
+        """
+        Reads in text in a given input file, returns the input as a list of strings
+        """
         try:
             with open(input_file, "r", encoding="utf-8") as fp:
                 return fp.readlines()
