@@ -13,7 +13,7 @@ def main():
     """
     print("[*] Beginning...")
     d1 = D1(debug=True)
-    d1.one("../input/d1-1.txt")
+    print(d1.one("../input/d1-1.txt"))
 
 
 if __name__ == '__main__':
