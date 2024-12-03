@@ -15,26 +15,47 @@ class D1(Day):
     """
     def __init__(self, debug=False):
         super().__init__(debug=debug)
+        self.list1 = []
+        self.list2 = []
+
+    def get_input_lists(self, input_file):
+        """
+        Abstracted ability to unzip and store the sorted lists,
+        which are used by both puzzles
+        """
+        input_one = self.read_input(input_file)
+        if input_one is None:
+            if self.debug:
+                print("[!] Exiting...")
+            return None
+        self.list1, self.list2 = unzip(input_one)
+        self.list1.sort()
+        self.list2.sort()
 
     def one(self, input_file):
         """
         Adds together the differences between each set of numbers in the input
         """
         total = 0
-        input_one = self.read_input(input_file)
-        if input_one is None:
-            if self.debug:
-                print("[!] Exiting...")
-            return None
-        list1, list2 = unzip(input_one)
-        list1.sort()
-        list2.sort()
+        self.get_input_lists(input_file)
         if self.debug:
-            print(f"[*] L1 = '{list1[0:3]}'...L2 = '{list2[0:3]}'...")
-        for i in range(len(list1)):
-            total += abs(int(list1[i]) - int(list2[i]))
+            print(f"[*] L1 = '{self.list1[0:3]}'...L2 = '{self.list2[0:3]}'...")
+        for i in range(len(self.list1)):
+            total += abs(int(self.list1[i]) - int(self.list2[i]))
         return total
 
+    def two(self, input_file):
+        """
+        Calculates the 'similarity score' by multiplying the numbers in the
+        first list by the number of times they appear in the second list
+        """
+        total = 0
+        self.get_input_lists(input_file)
+        if self.debug:
+            print(f"[*] L1 = '{self.list1[0:3]}'...L2 = '{self.list2[0:3]}'...")
+        for i in self.list1:
+            total += int(i) * self.list2.count(i)
+        return total
 
 if __name__ == '__main__':
     print("[!] This is just a class definition!")
