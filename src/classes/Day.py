@@ -8,6 +8,7 @@ class Day():
     """
     def __init__(self, debug=False):
         self.debug = debug
+        self.total = 0
 
     def read_input(self, input_file):
         """
