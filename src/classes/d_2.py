@@ -1,5 +1,5 @@
 """
-Class file containing the solution to Day One's puzzles
+Class file containing the solution to Day Two's puzzles
 """
 
 try:
