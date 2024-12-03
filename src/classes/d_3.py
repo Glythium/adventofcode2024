@@ -53,7 +53,8 @@ class D3(Day):
         while match:
             # If we find a 'don't()' before our next mul
             if "don't()" in lines[:match.start()]:
-                # Just start looking for the next do()
+                # Just start looking for the next do() by moving the starting
+                # index of the string past the don't() until we reach the next do()
                 lines = lines[lines.find("don't()") + len("don't()"):]
                 new_start = lines.find("do()")
             else:
