@@ -25,8 +25,8 @@ class D3(Day):
         together and sum it all up
         """
         total = 0
-        self.lines = self.read_input(input_file)
-        for line in self.lines:
+        lines = self.read_input(input_file)
+        for line in lines:
             num_list = re.findall(self.pattern, line)
             for i in num_list:
                 nums = i.split(',')
@@ -39,25 +39,32 @@ class D3(Day):
         together and sum it all up, but not if there was a preceding 'don't'
         """
         total = 0
-        self.lines = self.read_input(input_file)
-        for line in self.lines:
-            # Start by finding the first match
-            match = re.search(self.pattern, line)
-            while match:
-                # If we find a 'don't()' before our next mul
-                if "don't()" in line[:match.start()]:
-                    # Just start looking for the next do()
-                    line = line.split("don't()")[1]
-                    new_start = line.find("do()")
-                else:
-                    # Otherwise, we have a mul we can add
-                    nums = match.groups()[0].split(',')
-                    total += int(nums[0]) * int(nums[1])
-                    # Set the new start of the line just after this mul
-                    new_start = match.end()
-                # Set the new start of the line and find the next mul
-                line = line[new_start:]
-                match = re.search(self.pattern, line)
+        try:
+            with open(input_file, "r", encoding="utf-8") as fp:
+                lines = fp.read()
+        except FileNotFoundError:
+            if self.debug:
+                print(f"[!] FileNotFound '{input_file}")
+            return None
+        # Start by finding the first match
+        if self.debug:
+            print(lines)
+        match = re.search(self.pattern, lines)
+        while match:
+            # If we find a 'don't()' before our next mul
+            if "don't()" in lines[:match.start()]:
+                # Just start looking for the next do()
+                lines = lines[lines.find("don't()") + len("don't()"):]
+                new_start = lines.find("do()")
+            else:
+                # Otherwise, we have a mul we can add
+                nums = match.groups()[0].split(',')
+                total += int(nums[0]) * int(nums[1])
+                # Set the new start of the line just after this mul
+                new_start = match.end()
+            # Set the new start of the line and find the next mul
+            lines = lines[new_start:]
+            match = re.search(self.pattern, lines)
         return total
 
 
