@@ -12,8 +12,8 @@ def main():
     Generates a solution for a day's puzzles
     """
     d3 = D3(debug=False)
-    print(d3.solve("../input/d3.txt"))
-    print(d3.solve("../input/d3.txt"))
+    print(d3.one("../input/d3.txt"))
+    print(d3.two("../input/d3.txt"))
 
 
 if __name__ == '__main__':
