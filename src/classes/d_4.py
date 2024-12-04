@@ -41,53 +41,79 @@ class D4(Day):
                 # We're going to use idx_x for accessing other lines horizontally
                 #   from the anchoring 'X'
                 if letter == 'X':
+                    if self.debug:
+                        print(idx_y,idx_x)
                     # We have found an anchoring 'X'
-                    try:
-                        # Now, we need to start reaching out from here to
-                        #   find the rest of our 'MAS'
+                    # Now, we need to start reaching out from here to
+                    #   find the rest of our 'MAS'
 
+                    try:
                         # Forward horizontal (+X , Y)
                         if self.matrix[idx_y][idx_x + 1] + self.matrix[idx_y][idx_x + 2] + self.matrix[idx_y][idx_x + 3] == 'MAS':
                             self.total += 1
-                        
+                            if self.debug:
+                                print("FH")
+                    except IndexError:
+                        pass
+                    
+                    try:
                         # Straight down vertically (X , +Y)
                         if self.matrix[idx_y + 1][idx_x] + self.matrix[idx_y + 2][idx_x] + self.matrix[idx_y + 3][idx_x] == "MAS":
                             self.total += 1
+                            if self.debug:
+                                print("SDV")
+                    except IndexError:
+                        pass
+                    
+                    try:
+                        # Forward down diagonally (+X , +Y)
+                        if self.matrix[idx_y + 1][idx_x + 1] + self.matrix[idx_y + 2][idx_x + 2] + self.matrix[idx_y + 3][idx_x + 3] == "MAS":
+                            self.total += 1
+                            if self.debug:
+                                print("FDD")
+                    except IndexError:
+                        pass
+                    
+                    # For the reverse searches, we need to check to ensure
+                    #   we don't attempt a negative index which will wrap
+                    if idx_x - len("MAS") >= 0:
+                        # Reverse horizontal (-X , Y)
+                        if self.matrix[idx_y][idx_x - 1] + self.matrix[idx_y][idx_x - 2] + self.matrix[idx_y][idx_x - 3] == "MAS":
+                            self.total += 1
+                            if self.debug:
+                                print("RH")
                         
-                        # For the reverse searches, we need to check to ensure
-                        #   we don't attempt a negative index which will wrap
-                        if idx_x - len("MAS") >= 0:
-                            # Reverse horizontal (-X , Y)
-                            if self.matrix[idx_y][idx_x - 1] + self.matrix[idx_y][idx_x - 2] + self.matrix[idx_y][idx_x - 3] == "MAS":
-                                self.total += 1
-                            
+                        try:
                             # Reverse down diagonally (-X , +Y)
                             if self.matrix[idx_y + 1][idx_x - 1] + self.matrix[idx_y + 2][idx_x - 2] + self.matrix[idx_y + 3][idx_x - 3] == "MAS":
                                 self.total += 1
-                        
-                        if idx_y - len("MAS") >= 0:
-                            # Reverse up vertically (X , -Y)
-                            if self.matrix[idx_y - 1][idx_x] + self.matrix[idx_y - 2][idx_x] + self.matrix[idx_y - 3][idx_x] == "MAS":
-                                self.total += 1
-                            
+                                if self.debug:
+                                    print("RDD")
+                        except IndexError:
+                            pass
+                    
+                    if idx_y - len("MAS") >= 0:
+                        # Reverse up vertically (X , -Y)
+                        if self.matrix[idx_y - 1][idx_x] + self.matrix[idx_y - 2][idx_x] + self.matrix[idx_y - 3][idx_x] == "MAS":
+                            self.total += 1
+                            if self.debug:
+                                print("RUV")
+
+                        try:
                             # Forward up diagonally (+X , -Y)
                             if self.matrix[idx_y - 1][idx_x + 1] + self.matrix[idx_y - 2][idx_x + 2] + self.matrix[idx_y - 3][idx_x + 3] == "MAS":
                                 self.total += 1
-                            
-                            # Forward down diagonally (+X , +Y)
-                            if self.matrix[idx_y + 1][idx_x + 1] + self.matrix[idx_y + 2][idx_x + 2] + self.matrix[idx_y + 3][idx_x + 3] == "MAS":
-                                self.total += 1
-                        
-                        if idx_x - len("MAS") >= 0 and idx_y - len("MAS") >= 0:
-                            # Reverse up diagonally (-X , -Y)
-                            if self.matrix[idx_y - 1][idx_x - 1] + self.matrix[idx_y - 2][idx_x - 2] + self.matrix[idx_y - 3][idx_x - 3] == "MAS":
-                                self.total += 1
-                    except IndexError:
-                        # This Exception will catch attempts to overextend
-                        #   the limit of our matrix. However, Python does
-                        #   allow for negative indexing, so we handle
-                        #   that in the try block.
-                        pass
+                                if self.debug:
+                                    print("FUD")
+                        except IndexError:
+                            pass
+                    
+                    if idx_x - len("MAS") >= 0 and idx_y - len("MAS") >= 0:
+                        # Reverse up diagonally (-X , -Y)
+                        if self.matrix[idx_y - 1][idx_x - 1] + self.matrix[idx_y - 2][idx_x - 2] + self.matrix[idx_y - 3][idx_x - 3] == "MAS":
+                            self.total += 1
+                            if self.debug:
+                                print("RUD")
         return self.total
 
     def two(self):
