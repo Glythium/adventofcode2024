@@ -24,6 +24,33 @@ class D4(Day):
         referencing using two references corresponding to X and Y coordinates 
         """
         self.matrix = self.input.splitlines()
+    
+    def forward_horizontal(self, y, x):
+        string = ""
+        try:
+            for i in (1, 2, 3):
+                string += self.matrix[y][x + i]
+            return string == "MAS"
+        except IndexError:
+            return False
+    
+    def down_vertically(self, y, x):
+        string = ""
+        try:
+            for i in (1, 2, 3):
+                string += self.matrix[y + i][x]
+            return string == "MAS"
+        except IndexError:
+            return False
+    
+    def forward_down_diagonally(self, y, x):
+        string = ""
+        try:
+            for i in (1, 2, 3):
+                string += self.matrix[y + i][x + i]
+            return string == "MAS"
+        except IndexError:
+            return False
 
     def one(self):
         """
@@ -47,32 +74,23 @@ class D4(Day):
                     # Now, we need to start reaching out from here to
                     #   find the rest of our 'MAS'
 
-                    try:
-                        # Forward horizontal (+X , Y)
-                        if self.matrix[idx_y][idx_x + 1] + self.matrix[idx_y][idx_x + 2] + self.matrix[idx_y][idx_x + 3] == 'MAS':
-                            self.total += 1
-                            if self.debug:
-                                print("FH")
-                    except IndexError:
-                        pass
+                    # Forward horizontal (+X , Y)
+                    if self.forward_horizontal(idx_y, idx_x):
+                        self.total += 1
+                        if self.debug:
+                            print("FH")
                     
-                    try:
-                        # Straight down vertically (X , +Y)
-                        if self.matrix[idx_y + 1][idx_x] + self.matrix[idx_y + 2][idx_x] + self.matrix[idx_y + 3][idx_x] == "MAS":
-                            self.total += 1
-                            if self.debug:
-                                print("SDV")
-                    except IndexError:
-                        pass
+                    # Straight down vertically (X , +Y)
+                    if self.down_vertically(idx_y, idx_x):
+                        self.total += 1
+                        if self.debug:
+                            print("SDV")
                     
-                    try:
-                        # Forward down diagonally (+X , +Y)
-                        if self.matrix[idx_y + 1][idx_x + 1] + self.matrix[idx_y + 2][idx_x + 2] + self.matrix[idx_y + 3][idx_x + 3] == "MAS":
-                            self.total += 1
-                            if self.debug:
-                                print("FDD")
-                    except IndexError:
-                        pass
+                    # Forward down diagonally (+X , +Y)
+                    if self.forward_down_diagonally(idx_y, idx_x):
+                        self.total += 1
+                        if self.debug:
+                            print("FDD")
                     
                     # For the reverse searches, we need to check to ensure
                     #   we don't attempt a negative index which will wrap
@@ -118,9 +136,21 @@ class D4(Day):
 
     def two(self):
         """
-        TBD
+        Pretty much same as above, but we're looking for a X-MAS
         """
-        pass
+        # To safely use this attribute, we're going to reinitialize it to zero
+        self.total = 0
+
+        # Iterate through each line in the matrix
+        for idx_y,line in enumerate(self.matrix):
+            # We're going to use idx_y for accessing other lines vertically.
+            # Iterate through each character in the line from the anchoring 'X'
+            for idx_x,letter in enumerate(line):
+                # We're going to use idx_x for accessing other lines horizontally
+                #   from the anchoring 'M'
+                if letter == 'M':
+                    pass
+
 
 
 if __name__ == '__main__':
