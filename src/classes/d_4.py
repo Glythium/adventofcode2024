@@ -25,32 +25,68 @@ class D4(Day):
         """
         self.matrix = self.input.splitlines()
     
-    def forward_horizontal(self, y, x):
+    def forward_horizontal(self, y, x, target):
         string = ""
         try:
-            for i in (1, 2, 3):
+            for i in range(1, len(target) + 1):
                 string += self.matrix[y][x + i]
-            return string == "MAS"
+            return string == target
         except IndexError:
             return False
     
-    def down_vertically(self, y, x):
+    def down_vertically(self, y, x, target):
         string = ""
         try:
-            for i in (1, 2, 3):
+            for i in range(1, len(target) + 1):
                 string += self.matrix[y + i][x]
-            return string == "MAS"
+            return string == target
         except IndexError:
             return False
     
-    def forward_down_diagonally(self, y, x):
+    def forward_down_diagonally(self, y, x, target):
         string = ""
         try:
-            for i in (1, 2, 3):
+            for i in range(1, len(target) + 1):
                 string += self.matrix[y + i][x + i]
-            return string == "MAS"
+            return string == target
         except IndexError:
             return False
+    
+    def reverse_horizontal(self, y, x, target):
+        string = ""
+        for i in range(1, len(target) + 1):
+            string += self.matrix[y][x - i]
+        return string == target
+
+    def reverse_vertically(self, y, x, target):
+        string = ""
+        for i in range(1, len(target) + 1):
+            string += self.matrix[y - i][x]
+        return string == target
+    
+    def reverse_down_diagonally(self, y, x, target):
+        string = ""
+        try:
+            for i in range(1, len(target) + 1):
+                string += self.matrix[y + i][x - i]
+            return string == target
+        except IndexError:
+            return False
+    
+    def forward_up_diagonally(self, y, x, target):
+        string = ""
+        try:
+            for i in range(1, len(target) + 1):
+                string += self.matrix[y - i][x + i]
+            return string == target
+        except IndexError:
+            return False
+    
+    def reverse_up_diagonally(self, y, x, target):
+        string = ""
+        for i in range(1, len(target) + 1):
+            string += self.matrix[y - i][x - i]
+        return string == target
 
     def one(self):
         """
@@ -75,19 +111,19 @@ class D4(Day):
                     #   find the rest of our 'MAS'
 
                     # Forward horizontal (+X , Y)
-                    if self.forward_horizontal(idx_y, idx_x):
+                    if self.forward_horizontal(idx_y, idx_x, "MAS"):
                         self.total += 1
                         if self.debug:
                             print("FH")
                     
                     # Straight down vertically (X , +Y)
-                    if self.down_vertically(idx_y, idx_x):
+                    if self.down_vertically(idx_y, idx_x, "MAS"):
                         self.total += 1
                         if self.debug:
                             print("SDV")
                     
                     # Forward down diagonally (+X , +Y)
-                    if self.forward_down_diagonally(idx_y, idx_x):
+                    if self.forward_down_diagonally(idx_y, idx_x, "MAS"):
                         self.total += 1
                         if self.debug:
                             print("FDD")
@@ -96,14 +132,14 @@ class D4(Day):
                     #   we don't attempt a negative index which will wrap
                     if idx_x - len("MAS") >= 0:
                         # Reverse horizontal (-X , Y)
-                        if self.matrix[idx_y][idx_x - 1] + self.matrix[idx_y][idx_x - 2] + self.matrix[idx_y][idx_x - 3] == "MAS":
+                        if self.reverse_horizontal(idx_y, idx_x, "MAS"):
                             self.total += 1
                             if self.debug:
                                 print("RH")
                         
                         try:
                             # Reverse down diagonally (-X , +Y)
-                            if self.matrix[idx_y + 1][idx_x - 1] + self.matrix[idx_y + 2][idx_x - 2] + self.matrix[idx_y + 3][idx_x - 3] == "MAS":
+                            if self.reverse_down_diagonally(idx_y, idx_x, "MAS"):
                                 self.total += 1
                                 if self.debug:
                                     print("RDD")
@@ -112,14 +148,14 @@ class D4(Day):
                     
                     if idx_y - len("MAS") >= 0:
                         # Reverse up vertically (X , -Y)
-                        if self.matrix[idx_y - 1][idx_x] + self.matrix[idx_y - 2][idx_x] + self.matrix[idx_y - 3][idx_x] == "MAS":
+                        if self.reverse_vertically(idx_y, idx_x, "MAS"):
                             self.total += 1
                             if self.debug:
                                 print("RUV")
 
                         try:
                             # Forward up diagonally (+X , -Y)
-                            if self.matrix[idx_y - 1][idx_x + 1] + self.matrix[idx_y - 2][idx_x + 2] + self.matrix[idx_y - 3][idx_x + 3] == "MAS":
+                            if self.forward_up_diagonally(idx_y, idx_x, "MAS"):
                                 self.total += 1
                                 if self.debug:
                                     print("FUD")
@@ -128,7 +164,7 @@ class D4(Day):
                     
                     if idx_x - len("MAS") >= 0 and idx_y - len("MAS") >= 0:
                         # Reverse up diagonally (-X , -Y)
-                        if self.matrix[idx_y - 1][idx_x - 1] + self.matrix[idx_y - 2][idx_x - 2] + self.matrix[idx_y - 3][idx_x - 3] == "MAS":
+                        if self.reverse_up_diagonally(idx_y, idx_x, "MAS"):
                             self.total += 1
                             if self.debug:
                                 print("RUD")
