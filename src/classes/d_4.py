@@ -183,10 +183,56 @@ class D4(Day):
             # Iterate through each character in the line from the anchoring 'X'
             for idx_x,letter in enumerate(line):
                 # We're going to use idx_x for accessing other lines horizontally
-                #   from the anchoring 'M'
-                if letter == 'M':
-                    pass
-
+                #   from the anchoring 'A'
+                if letter == 'A':
+                    if self.debug:
+                        print(idx_y, idx_x)
+                    if idx_y - 1 >= 0 and idx_x - 1 >= 0:
+                        if self.forward_down_diagonally(idx_y - 2, idx_x - 2, "MAS"):
+                            if self.reverse_down_diagonally(idx_y - 2, idx_x + 2, "MAS"):
+                                """
+                                M   M
+                                  A
+                                S   S
+                                """
+                                self.total += 1
+                                if self.debug:
+                                    print("FDD -> RDD")
+                            if self.forward_up_diagonally(idx_y + 2, idx_x - 2, "MAS"):
+                                """
+                                M   S
+                                  A
+                                M   S
+                                """
+                                self.total += 1
+                                if self.debug:
+                                    print("FDD -> FUD")
+                    try:
+                        if self.matrix[idx_y + 1][idx_x + 1] == "M":
+                            if self.reverse_up_diagonally(idx_y + 2, idx_x + 2, "MAS"):
+                                if idx_x - 1 >= 0:
+                                    if self.forward_up_diagonally(idx_y + 2, idx_x - 2, "MAS"):
+                                        """
+                                        S   S
+                                          A
+                                        M   M
+                                        """
+                                        self.total += 1
+                                        if self.debug:
+                                            print("RUD -> FUD")
+                                if idx_y - 1 >= 0:
+                                    if self.reverse_down_diagonally(idx_y - 2, idx_x + 2, "MAS"):
+                                        """
+                                        S   M
+                                          A
+                                        S   M
+                                        """
+                                        self.total += 1
+                                        if self.debug:
+                                            print("RUD -> RDD")
+                    except IndexError:
+                        pass
+        return self.total
 
 
 if __name__ == '__main__':
