@@ -14,12 +14,71 @@ class D4(Day):
     """
     def __init__(self, input_file, debug=False):
         super().__init__(input_file, debug=debug)
+        self.matrix = []
+        self.target_word = "XMAS"
+        self.create_matrix()
+
+    def create_matrix(self):
+        """
+        Using splitlines() here creates a list of strings that we can start
+        referencing using two references corresponding to X and Y coordinates 
+        """
+        self.matrix = self.input.splitlines()
 
     def one(self):
         """
-        TBD
+        Finds every instance of 'XMAS' forwards, backwards, vertically, and
+        diagonally in a matrix of input.
         """
-        return self.input
+        # To safely use this attribute, we're going to reinitialize it to zero
+        self.total = 0
+
+        # Iterate through each line in the matrix
+        for idx_y,line in enumerate(self.matrix):
+            # We're going to use idx_y for accessing other lines vertically.
+            # Iterate through each character in the line from the anchoring 'X'
+            for idx_x,letter in enumerate(line):
+                # We're going to use idx_x for accessing other lines horizontally
+                #   from the anchoring 'X'
+                if letter == 'X':
+                    # We have found an anchoring 'X'
+                    try:
+                        # Now, we need to start reaching out from here to
+                        #   find the rest of our 'MAS'
+
+                        # Forward horizontal
+                        if line[idx_x + 1] + line[idx_x + 2] + line[idx_x + 3] == 'MAS':
+                            self.total += 1
+                        
+                        # Straight down vertically
+                        if self.matrix[idx_y + 1][idx_x] + self.matrix[idx_y + 2][idx_x] + self.matrix[idx_y + 3][idx_x] == "MAS":
+                            self.total += 1
+                        
+                        # For the reverse searches, we need to check to ensure
+                        #   we don't attempt a negative index which will wrap
+                        if idx_x - len("MAS") >= 0:
+                            # Reverse horizontal
+                            if line[idx_x - 1] + line[idx_x - 2] + line[idx_x - 3] == "MAS":
+                                self.total += 1
+                        
+                        if idx_y - len("MAS") >= 0:
+                            # Reverse up vertically
+                            if self.matrix[idx_y - 1][idx_x] + self.matrix[idx_y - 2][idx_x] + self.matrix[idx_y - 3][idx_x] == "MAS":
+                                self.total += 1
+                            
+                    except IndexError:
+                        # This Exception will catch attempts to overextend
+                        #   the limit of our matrix. However, Python does
+                        #   allow for negative indexing, so we handle
+                        #   that in the try block.
+                        pass
+                        
+        # print(self.matrix[3][3])
+        # print(self.matrix[2][4])
+        # print(self.matrix[1][5])
+        # print(self.matrix[0][6])
+
+        return self.total
 
     def two(self):
         """
