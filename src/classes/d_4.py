@@ -47,7 +47,7 @@ class D4(Day):
                         #   find the rest of our 'MAS'
 
                         # Forward horizontal (+X , Y)
-                        if line[idx_x + 1] + line[idx_x + 2] + line[idx_x + 3] == 'MAS':
+                        if self.matrix[idx_y][idx_x + 1] + self.matrix[idx_y][idx_x + 2] + self.matrix[idx_y][idx_x + 3] == 'MAS':
                             self.total += 1
                         
                         # Straight down vertically (X , +Y)
@@ -58,7 +58,7 @@ class D4(Day):
                         #   we don't attempt a negative index which will wrap
                         if idx_x - len("MAS") >= 0:
                             # Reverse horizontal (-X , Y)
-                            if line[idx_x - 1] + line[idx_x - 2] + line[idx_x - 3] == "MAS":
+                            if self.matrix[idx_y][idx_x - 1] + self.matrix[idx_y][idx_x - 2] + self.matrix[idx_y][idx_x - 3] == "MAS":
                                 self.total += 1
                             
                             # Reverse down diagonally (-X , +Y)
