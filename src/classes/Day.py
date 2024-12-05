@@ -6,28 +6,29 @@ class Day():
     """
     Abstract base class for each Day's solutions
     """
-    def __init__(self, debug=False):
+    def __init__(self, input_file, debug=False):
         self.debug = debug
         self.total = 0
+        self.input = self.read_input(input_file)
 
     def read_input(self, input_file):
         """
-        Reads in text in a given input file, returns the input as a list of strings
+        Reads in text in a given input file, returns the input as a string
         """
         try:
             with open(input_file, "r", encoding="utf-8") as fp:
-                return fp.readlines()
+                return fp.read()
         except FileNotFoundError:
             if self.debug:
                 print(f"[!] FileNotFound '{input_file}")
             return None
 
-    def one(self, input_file):
+    def one(self):
         """
         Override this in your child class
         """
 
-    def two(self, input_file):
+    def two(self):
         """
         Override this in your child class
         """
