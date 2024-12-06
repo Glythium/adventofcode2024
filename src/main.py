@@ -3,7 +3,7 @@ The main driver for AoC 2024. Run this from the src directory
 """
 
 try:
-    from classes.d_4 import D4
+    from classes.d_5 import D5
 except ModuleNotFoundError:
     print("[!] Could not find modules!")
 
@@ -11,9 +11,9 @@ def main():
     """
     Generates a solution for a day's puzzles
     """
-    d4 = D4("../input/d4.txt", debug=False)
-    # print(d4.one())
-    print(d4.two())
+    d5 = D5("../input/d5.txt", debug=False)
+    print(d5.one())
+    print(d5.two())
 
 
 if __name__ == '__main__':

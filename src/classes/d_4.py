@@ -1,7 +1,6 @@
 """
 Class file containing the solution to Day Four's puzzles
 """
-import re
 try:
     from .day import Day
 except ModuleNotFoundError:
@@ -10,7 +9,7 @@ except ModuleNotFoundError:
 
 class D4(Day):
     """
-    Class containing the solution to Day 3
+    Class containing the solution to Day 4
     """
     def __init__(self, input_file, debug=False):
         super().__init__(input_file, debug=debug)
