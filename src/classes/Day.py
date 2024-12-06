@@ -23,6 +23,13 @@ class Day():
                 print(f"[!] FileNotFound '{input_file}")
             return None
 
+    def create_matrix(self):
+        """
+        Using splitlines() here creates a list of strings that we can start
+        referencing using two references corresponding to X and Y coordinates 
+        """
+        self.matrix = self.input.splitlines()
+
     def one(self):
         """
         Override this in your child class
