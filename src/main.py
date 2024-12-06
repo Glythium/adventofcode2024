@@ -11,7 +11,7 @@ def main():
     """
     Generates a solution for a day's puzzles
     """
-    d6 = D6("../input/d6ex.txt", debug=True)
+    d6 = D6("../input/d6.txt", debug=True)
     print(d6.one())
     # print(d5.two())
 

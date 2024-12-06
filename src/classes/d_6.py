@@ -84,17 +84,21 @@ class D6(Day):
                     cur_heading = chr
         if self.debug:
             print(f"current_point = {current_point}")
-        
+
         # Stepping loop
-        while 0 < current_point[0] < max_y and 0 < current_point[1] < max_x:
+        while 0 <= current_point[0] < max_y and 0 <= current_point[1] < max_x:
             # Look ahead to our next location
             planned_point = self.plot_step(current_point, cur_heading)
             new_y = planned_point[0]
             new_x = planned_point[1]
+            been_visited = False
             try:
                 next_chr = self.matrix[new_y][new_x]
             except IndexError:
                 next_chr = "."
+
+            if next_chr == "X":
+                been_visited = True
 
             # If the next point is a blocker
             if next_chr == "#":
@@ -110,16 +114,19 @@ class D6(Day):
                     pass
                 # Increment our point so we can break this while loop naturally
                 current_point = planned_point
-                self.total += 1
+                if not been_visited:
+                    self.total += 1
                 self.draw_matrix()
-        
-        # Just counting the X chars gives the right answer for the example (41)
-        just_xs = 0
-        for line in self.matrix:
-            just_xs += line.count("X")
-        print(just_xs)
-        
-        # I'm currently getting 45 as my self.total
+                if self.debug:
+                    print(self.total)
+
+        if self.debug:
+            # Just counting the X chars gives the right answer for the example (41)
+            just_xs = 0
+            for line in self.matrix:
+                just_xs += line.count("X")
+            print(f"justxs = {just_xs}")
+
         return self.total
 
     def two(self):
