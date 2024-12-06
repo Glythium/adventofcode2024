@@ -11,9 +11,9 @@ def main():
     """
     Generates a solution for a day's puzzles
     """
-    d5 = D5("../input/d5.txt", debug=True)
+    d5 = D5("../input/d5.txt", debug=False)
     print(d5.one())
-    # print(d5.two())
+    print(d5.two())
 
 
 if __name__ == '__main__':

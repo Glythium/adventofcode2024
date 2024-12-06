@@ -37,7 +37,7 @@ class D5(Day):
             # Let the next number know it should come before the first
             self.ordering[after]["after"].append(before)
         if self.debug:
-            print(f"Example of directions dict -- '45': {self.ordering['45']}")
+            print(f"Example of directions dict -- '47': {self.ordering['47']}")
 
     def split_input(self):
         directions = list()
@@ -50,20 +50,15 @@ class D5(Day):
         if self.debug:
             print(f"Example of page list -- self.pages[0] = {self.pages[0]}")
 
-    def one(self):
-        """
-        Identifies lines that follow a given set of number ordering rules
-        """
-        # To safely use this attribute, we're going to reinitialize it to zero
-        self.total = 0
-        self.split_input()
+    def check_pattern(self, all_nums, should_remediate=False):
+        bad_nums = []
         # Iterate through each line of page numbers
-        for nums in self.pages:
+        for nums in all_nums:
             is_following_rules = True
             # For each page number in a given line
             for idx,num in enumerate(nums):
                 # We'll start with going forward
-                for i in range(len(nums) - idx):
+                for i in range(idx, len(nums)):
                     if idx == i:
                         continue
                     later = nums[i]
@@ -72,20 +67,58 @@ class D5(Day):
                     if later in self.ordering[num]["after"]:
                         # If it is, this is not a valid line
                         is_following_rules = False
+                        if self.debug:
+                            print("later in self.ordering[num]['after']")
+                        if should_remediate:
+                            nums[i] = nums[idx]
+                            nums[idx] = later
                         break
                 if not is_following_rules:
                     break
+                for i in range(idx, -1, -1):
+                    if idx == i:
+                        continue
+                    earlier = nums[i]
+                    # Check if our anchor number is supposed to come after
+                    #   this later number in the list
+                    if earlier in self.ordering[num]["before"]:
+                        # If it is, this is not a valid line
+                        is_following_rules = False
+                        if self.debug:
+                            print("earlier in self.ordering[num]['before']")
+                        if should_remediate:
+                            nums[i] = nums[idx]
+                            nums[idx] = earlier
+                        break
             if is_following_rules:
                 if self.debug:
                     print(nums)
+                self.total += int(nums[len(nums) // 2])
+            else:
+                bad_nums.append(nums)
+        return bad_nums
+
+    def one(self):
+        """
+        Identifies lines that follow a given set of number ordering rules
+        """
+        # To safely use this attribute, we're going to reinitialize it to zero
+        self.total = 0
+        self.split_input()
+        self.check_pattern(self.pages)
+        self.pages = []
         return self.total
 
     def two(self):
         """
-        TBD
+        Corrects the unordered numbers in the mismatched lists
         """
         # To safely use this attribute, we're going to reinitialize it to zero
+        self.split_input()
+        bad_nums = self.check_pattern(self.pages)
         self.total = 0
+        while len(bad_nums) != 0:
+            bad_nums = self.check_pattern(bad_nums, should_remediate=True)
         return self.total
 
 
