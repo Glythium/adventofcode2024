@@ -48,13 +48,13 @@ class D6(Day):
         planned_point[0] += current_point[0]
         planned_point[1] += current_point[1]
         return planned_point
-    
+
     def draw_matrix(self):
         if self.debug:
             for line in self.matrix:
                 print(line)
             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    
+
     def redraw_line(self, line, new_chr, new_chr_idx):
         updated_line = ""
         for idx,chr in enumerate(line):
