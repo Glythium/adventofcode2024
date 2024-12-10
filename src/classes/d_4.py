@@ -15,13 +15,6 @@ class D4(Day):
         super().__init__(input_file, debug=debug)
         self.matrix = []
         self.create_matrix()
-
-    def create_matrix(self):
-        """
-        Using splitlines() here creates a list of strings that we can start
-        referencing using two references corresponding to X and Y coordinates 
-        """
-        self.matrix = self.input.splitlines()
     
     def search(self, y, x, y_dir, x_dir, target):
         string = ""
