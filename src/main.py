@@ -15,6 +15,5 @@ def main():
     print(d6.one())
     # print(d5.two())
 
-
 if __name__ == '__main__':
     main()
