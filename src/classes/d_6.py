@@ -9,7 +9,7 @@ except ModuleNotFoundError:
 
 class D6(Day):
     """
-    Class containing the solution to Day 5
+    Class containing the solution to Day 6
     """
     def __init__(self, input_file, debug=False):
         super().__init__(input_file, debug=debug)
@@ -139,5 +139,4 @@ class D6(Day):
 
 
 if __name__ == '__main__':
-
     print("[!] This is just a class definition!")
