@@ -3,6 +3,7 @@ Class file containing the solution to Day Five's puzzles
 """
 try:
     from .day import Day
+    from time import time
 except ModuleNotFoundError:
     print("[!] Run src/main.py from the src directory")
 
@@ -131,10 +132,77 @@ class D6(Day):
 
     def two(self):
         """
-        TBD
+        Loopmaking!
         """
         # To safely use this attribute, we're going to reinitialize it to zero
         self.total = 0
+        self.create_matrix()
+        total_spots = len(self.input) - self.input.count('\n')
+        ctr = 0
+        current_point = []
+        blockers_found = []
+        max_y = len(self.matrix)
+        max_x = len(self.matrix[0])
+        cur_heading = ""
+
+        # Find our starting point grid coordinate
+        for idx_y,line in enumerate(self.matrix):
+            for idx_x,chr in enumerate(line):
+                if chr in "^>v<":
+                    current_point = [idx_y, idx_x]
+                    cur_heading = chr
+        if self.debug:
+            print(f"starting_point = {current_point}")
+        
+        starting_point = current_point
+        starting_heading = cur_heading
+
+        for idx_y,line in enumerate(self.matrix):
+            for idx_x,chr in enumerate(line):
+                blockers_found = []
+                ctr += 1
+                print(f"{ctr}/{total_spots}")
+                if chr == '.':
+                    self.matrix[idx_y] = self.redraw_line(self.matrix[idx_y], "O", idx_x)
+                else:
+                    continue
+                current_point = starting_point
+                cur_heading = starting_heading
+                # Stepping loop
+                while 0 <= current_point[0] < max_y and 0 <= current_point[1] < max_x:
+                    # Look ahead to our next location
+                    planned_point = self.plot_step(current_point, cur_heading)
+                    new_y = planned_point[0]
+                    new_x = planned_point[1]
+                    try:
+                        next_chr = self.matrix[new_y][new_x]
+                    except IndexError:
+                        next_chr = "."
+                    # If the next point is a blocker
+                    if next_chr in "#O":
+                        # Just change heading this round
+                        blocked_point = [current_point[0], current_point[1], cur_heading]
+                        if blocked_point in blockers_found:
+                            if self.debug:
+                                print("loop found!")
+                            self.total += 1
+                            break
+                        blockers_found.append(blocked_point)
+                        cur_heading = self.change_heading(cur_heading)
+                    else:
+                        # Now, we're moving
+                        self.matrix[current_point[0]] = self.redraw_line(self.matrix[current_point[0]], ".", current_point[1])
+                        try:
+                            # This is wrapped in a try/catch so we don't try to write a line OOB
+                            self.matrix[new_y] = self.redraw_line(self.matrix[new_y], cur_heading, new_x)
+                        except IndexError:
+                            pass
+                        # Increment our point so we can break this while loop naturally
+                        current_point = planned_point
+                        if self.debug:
+                            self.draw_matrix()
+                            print(self.total)
+                self.matrix[idx_y] = self.redraw_line(self.matrix[idx_y], ".", idx_x)
         return self.total
 
 
